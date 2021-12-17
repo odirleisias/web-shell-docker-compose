@@ -1,0 +1,38 @@
+version: '3'
+services:
+    php-apache:
+        image: mitlabs/apache-php7.3
+        ports:
+            - 80:80
+        volumes:
+            - ./DocumentRoot:/var/www/html
+        links:
+            - 'mariadb'
+    mariadb:
+        image: mariadb
+        
+        environment:
+            TZ: "America/Chicago"
+            MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+            MYSQL_ROOT_PASSWORD: "root"
+            MYSQL_USER: 'odirlei'
+            MYSQL_PASSWORD: 'devops'
+            MYSQL_DATABASE: 'hotel'
+        ports:
+            - 3306:3306
+    phpmyadmin:
+        image: phpmyadmin
+        restart: always
+        ports:
+            - 8080:80
+        links:
+            - 'mariadb'  
+        environment:
+            PMA_HOST: mariadb    
+        restart: always
+        ports:
+            - 8080:80
+
+volumes:
+    mariadb: 
+    
